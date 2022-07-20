@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.bg-yellow{
+  background-color: lightyellow;
+}
+
+.bg-purple{
+  background-color: purple;
+}

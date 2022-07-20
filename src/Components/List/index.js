@@ -1,32 +1,11 @@
-import Button from '../Button'
-const List = () => {
-  const buttons = [
-    {
-      text: 'Botón 6',
-      color: 'primary'
-    },
-    {
-      text: 'Botón 7',
-      color: 'secondary'
-    },
-    {
-      text: 'Botón 8',
-      color: 'success'
-    },
-    {
-      text: 'Botón 9',
-      color: 'danger'
-    },
-    {
-      text: 'Botón 10',
-      color: 'warning'
-    }
-  ]
+import UserCard from '../UserCard'
+const List = props => {
+  const { data } = props
   return (
-    <div>
-      {buttons.map(button => {
-        return <Button />
-      })}
+    <div className='row row-cols-1 row-cols-md-4 g-4'>
+      {data.map((item, index) => (
+        <UserCard cardData={item} />
+      ))}
     </div>
   )
 }
