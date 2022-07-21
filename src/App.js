@@ -2,7 +2,7 @@ import './App.css'
 import CustomButton from './Components/Button'
 import List from './Components/List'
 
-import users from './mocks/mock_users.js'
+import users from './mocks/mock_users.js' //Mock data de los usuarios ( array )
 
 function App () {
   console.log(users)
