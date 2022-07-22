@@ -1,45 +1,44 @@
 import './App.css'
-import List from './Components/List'
-import products from './mocks/mock_products'
-import Shape from './Components/Shape'
+import { useState } from 'react'
+import Title from './Components/Title'
 
 function App () {
-  console.log('desde app')
-  console.log(products)
-  const shapes = [
-    {
-      shape: 'square',
-      color: 'red'
-    },
-    {
-      shape: 'circle',
-      color: 'blue'
-    },
-    {
-      shape: 'rectangle',
-      color: 'green'
-    },
-    {
-      shape: 'circle',
-      color: 'black'
-    },
-    {
-      shape: 'square',
-      color: 'yellow'
-    },
-    {
-      shape: 'rectangle',
-      color: 'red'
-    }
-  ]
+  const result = () => 5 + 6
+  const [title, setTitle] = useState('Hola koders!')
+  const [isLogged, setIsLogged] = useState(false)
+  const [miUnicoEstadoMaravilloso, setMiUnicoEstadoMaravilloso] = useState(
+    result()
+  ) //null
 
+  const inputHandler = event => {
+    console.log(event.target.name)
+    console.log(event.target.value)
+    setTitle(event.target.value)
+  }
+
+  const loginHandler = () => {
+    setIsLogged(true)
+  }
+
+  const logoutHandler = () => {
+    setIsLogged(false)
+  }
   return (
     <div className='App'>
-      {shapes
-        .filter(shape => shape.shape === 'square')
-        .map(shape => (
-          <Shape shape={shape.shape} color={shape.color} />
-        ))}
+      {/*!isLogged && (
+        <button className='btn btn-success' onClick={loginHandler}>
+          Login
+        </button>
+      )*/}
+      {/*isLogged && (
+        <button className='btn btn-warning' onClick={logoutHandler}>
+          Sign out
+        </button>
+      )*/}
+      {console.log(title)}
+      <input type='text' onChange={inputHandler} name='nombre' />
+      <input type='text' onChange={inputHandler} name='correo' />
+      <Title texto={title} />
     </div>
   )
 }
