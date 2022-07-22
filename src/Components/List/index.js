@@ -1,15 +1,13 @@
-import UserCard from '../UserCard'
+import ProductCard from '../ProductCard'
 const List = props => {
-  const {
-    data //arreglo con la data que queremos enlistar
-  } = props
+  const { listaProductos } = props
+  console.log('desde list')
+  console.log(listaProductos)
   return (
     <div className='row row-cols-1 row-cols-md-4 g-4'>
-      {data.map((item, index) => {
-        console.log('item:')
-        console.log(item)
-        return <UserCard cardData={item} />
-      })}
+      {listaProductos.map(producto => (
+        <ProductCard informacionDelProducto={producto} />
+      ))}
     </div>
   )
 }

@@ -1,34 +1,45 @@
 import './App.css'
-import CustomButton from './Components/Button'
 import List from './Components/List'
-
-import users from './mocks/mock_users.js' //Mock data de los usuarios ( array )
+import products from './mocks/mock_products'
+import Shape from './Components/Shape'
 
 function App () {
-  console.log(users)
-  const testUser = [
+  console.log('desde app')
+  console.log(products)
+  const shapes = [
     {
-      gender: 'female',
-      name: {
-        title: 'Ms',
-        first: 'Milja',
-        last: 'Wuori'
-      },
-      dob: {
-        date: '1986-10-10T10:21:11.034Z',
-        age: 35
-      },
-      picture: {
-        large: 'https://randomuser.me/api/portraits/women/55.jpg',
-        medium: 'https://randomuser.me/api/portraits/med/women/55.jpg',
-        thumbnail: 'https://randomuser.me/api/portraits/thumb/women/55.jpg'
-      }
+      shape: 'square',
+      color: 'red'
+    },
+    {
+      shape: 'circle',
+      color: 'blue'
+    },
+    {
+      shape: 'rectangle',
+      color: 'green'
+    },
+    {
+      shape: 'circle',
+      color: 'black'
+    },
+    {
+      shape: 'square',
+      color: 'yellow'
+    },
+    {
+      shape: 'rectangle',
+      color: 'red'
     }
   ]
+
   return (
     <div className='App'>
-      <List data={users} />
-      <List data={testUser} />
+      {shapes
+        .filter(shape => shape.shape === 'square')
+        .map(shape => (
+          <Shape shape={shape.shape} color={shape.color} />
+        ))}
     </div>
   )
 }
