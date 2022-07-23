@@ -1,44 +1,77 @@
 import './App.css'
 import { useState } from 'react'
-import Title from './Components/Title'
+import List from './Components/List'
 
 function App () {
-  const result = () => 5 + 6
-  const [title, setTitle] = useState('Hola koders!')
-  const [isLogged, setIsLogged] = useState(false)
-  const [miUnicoEstadoMaravilloso, setMiUnicoEstadoMaravilloso] = useState(
-    result()
-  ) //null
+  const [kodersList, setKodersList] = useState([])
+  const [koderData, setKoderData] = useState({})
 
+  /*{
+    nombre:
+    generacion:
+    email
+  }*/
   const inputHandler = event => {
-    console.log(event.target.name)
-    console.log(event.target.value)
-    setTitle(event.target.value)
+    let property = event.target.name
+    let value = event.target.value
+    console.log(`property: ${property} , value: ${value}`)
+    setKoderData({ ...koderData, [property]: value })
   }
 
-  const loginHandler = () => {
-    setIsLogged(true)
-  }
-
-  const logoutHandler = () => {
-    setIsLogged(false)
+  const guardarKoder = () => {
+    setKodersList([...kodersList, koderData])
   }
   return (
     <div className='App'>
-      {/*!isLogged && (
-        <button className='btn btn-success' onClick={loginHandler}>
-          Login
-        </button>
-      )*/}
-      {/*isLogged && (
-        <button className='btn btn-warning' onClick={logoutHandler}>
-          Sign out
-        </button>
-      )*/}
-      {console.log(title)}
-      <input type='text' onChange={inputHandler} name='nombre' />
-      <input type='text' onChange={inputHandler} name='correo' />
-      <Title texto={title} />
+      <div className='container-fluid'>
+        <div className='row'>
+          <div className='col-12 col-md-6'>
+            <form action='' className='bg-dark text-white p-3 border rounded'>
+              <div className='form-group'>
+                <label htmlFor=''>Nombre:</label>
+                <input
+                  type='text'
+                  className='form-control'
+                  name='nombre'
+                  onChange={inputHandler}
+                />
+              </div>
+              <div className='form-group'>
+                <label htmlFor=''>Correo</label>
+                <input
+                  type='text'
+                  className='form-control'
+                  name='email'
+                  onChange={inputHandler}
+                />
+              </div>
+              <div className='form-group'>
+                <label htmlFor=''>Generación</label>
+                <input
+                  type='text'
+                  className='form-control'
+                  name='generacion'
+                  onChange={inputHandler}
+                />
+              </div>
+              <button
+                className='btn btn-success mt-3 ms-auto'
+                onClick={guardarKoder}
+                type='button'
+              >
+                Guardar Koder
+              </button>
+            </form>
+          </div>
+          <div className='col-12 col-md-6 mt-3'>
+            {!kodersList.length ? (
+              <h2>Registra un koder</h2>
+            ) : (
+              <List kodersList={kodersList} />
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

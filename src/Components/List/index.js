@@ -1,13 +1,12 @@
-import ProductCard from '../ProductCard'
+import KoderCard from '../KoderCard'
+
 const List = props => {
-  const { listaProductos } = props
-  console.log('desde list')
-  console.log(listaProductos)
+  const { kodersList } = props
   return (
-    <div className='row row-cols-1 row-cols-md-4 g-4'>
-      {listaProductos.map(producto => (
-        <ProductCard informacionDelProducto={producto} />
-      ))}
+    <div className='row row-cols-1 row-cols-md-3 g-4'>
+      {kodersList.map((koder, index) => {
+        return <KoderCard koder={koder} key={index} />
+      })}
     </div>
   )
 }
