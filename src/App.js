@@ -1,6 +1,7 @@
 import './App.css'
 import { useState } from 'react'
 import List from './Components/List'
+import KoderForm from './Components/KoderForm'
 
 function App () {
   const [kodersList, setKodersList] = useState([])
@@ -26,42 +27,10 @@ function App () {
       <div className='container-fluid'>
         <div className='row'>
           <div className='col-12 col-md-6'>
-            <form action='' className='bg-dark text-white p-3 border rounded'>
-              <div className='form-group'>
-                <label htmlFor=''>Nombre:</label>
-                <input
-                  type='text'
-                  className='form-control'
-                  name='nombre'
-                  onChange={inputHandler}
-                />
-              </div>
-              <div className='form-group'>
-                <label htmlFor=''>Correo</label>
-                <input
-                  type='text'
-                  className='form-control'
-                  name='email'
-                  onChange={inputHandler}
-                />
-              </div>
-              <div className='form-group'>
-                <label htmlFor=''>Generación</label>
-                <input
-                  type='text'
-                  className='form-control'
-                  name='generacion'
-                  onChange={inputHandler}
-                />
-              </div>
-              <button
-                className='btn btn-success mt-3 ms-auto'
-                onClick={guardarKoder}
-                type='button'
-              >
-                Guardar Koder
-              </button>
-            </form>
+            <KoderForm
+              inputHandler={inputHandler}
+              guardarKoder={guardarKoder}
+            />
           </div>
           <div className='col-12 col-md-6 mt-3'>
             {!kodersList.length ? (

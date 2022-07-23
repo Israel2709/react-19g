@@ -5,7 +5,7 @@ const List = props => {
   return (
     <div className='row row-cols-1 row-cols-md-3 g-4'>
       {kodersList.map((koder, index) => {
-        return <KoderCard koder={koder} key={index} />
+        return <KoderCard koder={koder} key={index} koderId={index} />
       })}
     </div>
   )
