@@ -1,25 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react'
+import './App.css'
+import ItemsList from './Components/ItemsList'
+import products from './mocks/products'
 
-function App() {
+function App () {
+  const [selectedProducts, setSelectedProducts] = useState([])
+  const addProduct = id => {
+    console.log(id)
+    const selectedProduct = products.find(product => product.id === id)
+    console.log(selectedProduct)
+    setSelectedProducts([
+      ...selectedProducts,
+      { ...selectedProduct, purchased: true }
+    ])
+  }
+  const removeProduct = id => {
+    console.log(id)
+    const remainingProducts = selectedProducts.filter(
+      product => product.id !== id
+    )
+    setSelectedProducts(remainingProducts)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <div className='container-fluid'>
+        <div className='row'>
+          <div className='col-12 col-md-6'>
+            <h1>Catálogo de productos</h1>
+            <ItemsList
+              productsArray={products}
+              addProductHandler={addProduct}
+            />
+          </div>
+          <div className='col-12 col-md-6'>
+            <h1>Carrito de compras</h1>
+            {!selectedProducts.length ? (
+              <h2>Selecciona algún producto de la lista</h2>
+            ) : (
+              <>
+                <h3>
+                  Total:
+                  {selectedProducts.reduce((acc, curr) => acc + curr.price, 0)}
+                </h3>
+                <ItemsList
+                  productsArray={selectedProducts}
+                  removeProductHandler={removeProduct}
+                />
+              </>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
