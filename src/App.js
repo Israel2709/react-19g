@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import ItemsList from './Components/ItemsList'
 import products from './mocks/products'
@@ -21,6 +21,14 @@ function App () {
     )
     setSelectedProducts(remainingProducts)
   }
+
+  const categoriesList = products.reduce((accum, current) => {
+    return !accum.includes(current.category)
+      ? [...accum, current.category]
+      : accum
+  }, [])
+
+  console.log(categoriesList)
   return (
     <div className='App'>
       <div className='container-fluid'>
