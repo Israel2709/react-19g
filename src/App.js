@@ -1,61 +1,116 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
-import ItemsList from './Components/ItemsList'
-import products from './mocks/products'
 
 function App () {
-  const [selectedProducts, setSelectedProducts] = useState([])
-  const addProduct = id => {
-    console.log(id)
-    const selectedProduct = products.find(product => product.id === id)
-    console.log(selectedProduct)
-    setSelectedProducts([
-      ...selectedProducts,
-      { ...selectedProduct, purchased: true }
-    ])
+  const [kodersList, setKodersList] = useState()
+  const [koderData, setKoderData] = useState({})
+  const [newKoderKey, setNewKoderKey] = useState()
+
+  const inputHandler = event => {
+    const property = event.target.name
+    const value = event.target.value
+    setKoderData({ ...koderData, [property]: value })
   }
-  const removeProduct = id => {
-    console.log(id)
-    const remainingProducts = selectedProducts.filter(
-      product => product.id !== id
+
+  const saveKoder = async () => {
+    let result = await fetch(
+      'https://react-19g-db-default-rtdb.firebaseio.com/koders/.json',
+      {
+        method: 'POST',
+        body: JSON.stringify(koderData)
+      }
     )
-    setSelectedProducts(remainingProducts)
+    result = await result.json()
+    setNewKoderKey(result.name)
   }
+  const deleteKoder = async koderKey => {
+    let result = await fetch(
+      `https://react-19g-db-default-rtdb.firebaseio.com/koders/${koderKey}.json`,
+      {
+        method: 'DELETE'
+      }
+    )
+    console.log('result antes', result)
+    result = await result.json()
+    console.log('delete result', result)
 
-  const categoriesList = products.reduce((accum, current) => {
-    return !accum.includes(current.category)
-      ? [...accum, current.category]
-      : accum
-  }, [])
-
-  console.log(categoriesList)
+    let data = await fetch(
+      'https://react-19g-db-default-rtdb.firebaseio.com/koders/.json'
+    )
+    data = await data.json()
+    console.log(data)
+    setKodersList(data)
+  }
+  useEffect(() => {
+    const getKoders = async () => {
+      let data = await fetch(
+        'https://react-19g-db-default-rtdb.firebaseio.com/koders/.json'
+      )
+      data = await data.json()
+      console.log(data)
+      setKodersList(data)
+    }
+    getKoders()
+  }, [newKoderKey])
   return (
     <div className='App'>
-      <div className='container-fluid'>
+      <div className='container'>
         <div className='row'>
           <div className='col-12 col-md-6'>
-            <h1>Catálogo de productos</h1>
-            <ItemsList
-              productsArray={products}
-              addProductHandler={addProduct}
-            />
+            {kodersList ? (
+              <div className='row row-cols-1 row-cols-md-2 g-4'>
+                {Object.keys(kodersList).map(koderKey => {
+                  const { name, generation } = kodersList[koderKey]
+                  return (
+                    <div className='col h-100' key={koderKey}>
+                      <div className='card'>
+                        <div className='card-body'>
+                          <p className='card-text'>{name}</p>
+                          <p className='card-text'>{generation}</p>
+                          <button
+                            className='btn btn-danger'
+                            onClick={() => deleteKoder(koderKey)}
+                          >
+                            Borrar koder
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            ) : (
+              <div className='loader'></div>
+            )}
           </div>
           <div className='col-12 col-md-6'>
-            <h1>Carrito de compras</h1>
-            {!selectedProducts.length ? (
-              <h2>Selecciona algún producto de la lista</h2>
-            ) : (
-              <>
-                <h3>
-                  Total:
-                  {selectedProducts.reduce((acc, curr) => acc + curr.price, 0)}
-                </h3>
-                <ItemsList
-                  productsArray={selectedProducts}
-                  removeProductHandler={removeProduct}
+            <form action='' className='bg-dark text-white p-3 border rounded'>
+              <div className='form-group'>
+                <label htmlFor=''>Nombre del koder</label>
+                <input
+                  type='text'
+                  className='form-control'
+                  name='name'
+                  onChange={inputHandler}
                 />
-              </>
-            )}
+              </div>
+              <div className='form-group'>
+                <label htmlFor=''>Generación del koder</label>
+                <input
+                  type='text'
+                  className='form-control'
+                  name='generation'
+                  onChange={inputHandler}
+                />
+              </div>
+              <button
+                type='button'
+                className='btn btn-primary'
+                onClick={saveKoder}
+              >
+                Guardar Koder
+              </button>
+            </form>
           </div>
         </div>
       </div>
