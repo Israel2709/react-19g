@@ -1,113 +1,115 @@
 import { useState, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 import './App.css'
 
 function App () {
-  const [kodersList, setKodersList] = useState()
-  const [koderData, setKoderData] = useState({})
-  const [newKoderKey, setNewKoderKey] = useState()
+  const [name, setName] = useState('')
+  const [nameHasError, setNameHasError] = useState(false)
 
-  const inputHandler = event => {
-    const property = event.target.name
-    const value = event.target.value
-    setKoderData({ ...koderData, [property]: value })
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm()
 
-  const saveKoder = async () => {
+  const onSubmit = async data => {
+    console.log(data)
+    console.log(errors)
     let result = await fetch(
       'https://react-19g-db-default-rtdb.firebaseio.com/koders/.json',
       {
         method: 'POST',
-        body: JSON.stringify(koderData)
+        body: JSON.stringify(data)
       }
     )
-    result = await result.json()
-    setNewKoderKey(result.name)
+    console.log(await result.json())
   }
-  const deleteKoder = async koderKey => {
-    let result = await fetch(
-      `https://react-19g-db-default-rtdb.firebaseio.com/koders/${koderKey}.json`,
-      {
-        method: 'DELETE'
-      }
-    )
-    console.log('result antes', result)
-    result = await result.json()
-    console.log('delete result', result)
 
-    let data = await fetch(
-      'https://react-19g-db-default-rtdb.firebaseio.com/koders/.json'
-    )
-    data = await data.json()
-    console.log(data)
-    setKodersList(data)
-  }
-  useEffect(() => {
-    const getKoders = async () => {
-      let data = await fetch(
-        'https://react-19g-db-default-rtdb.firebaseio.com/koders/.json'
-      )
-      data = await data.json()
-      console.log(data)
-      setKodersList(data)
-    }
-    getKoders()
-  }, [newKoderKey])
   return (
     <div className='App'>
       <div className='container'>
         <div className='row'>
           <div className='col-12 col-md-6'>
-            {kodersList ? (
-              <div className='row row-cols-1 row-cols-md-2 g-4'>
-                {Object.keys(kodersList).map(koderKey => {
-                  const { name, generation } = kodersList[koderKey]
-                  return (
-                    <div className='col h-100' key={koderKey}>
-                      <div className='card'>
-                        <div className='card-body'>
-                          <p className='card-text'>{name}</p>
-                          <p className='card-text'>{generation}</p>
-                          <button
-                            className='btn btn-danger'
-                            onClick={() => deleteKoder(koderKey)}
-                          >
-                            Borrar koder
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            ) : (
-              <div className='loader'></div>
-            )}
-          </div>
-          <div className='col-12 col-md-6'>
-            <form action='' className='bg-dark text-white p-3 border rounded'>
-              <div className='form-group'>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className='bg-dark text-white p-3 border rounded'
+            >
+              <div className='form-group mb-3'>
                 <label htmlFor=''>Nombre del koder</label>
                 <input
                   type='text'
                   className='form-control'
                   name='name'
-                  onChange={inputHandler}
+                  placeholder='Nombre del koder'
+                  {...register('nombre', { required: true, maxLength: 10 })}
                 />
+                {errors.nombre && errors.nombre.type === 'required' && (
+                  <div className='alert alert-danger mt-3' role='alert'>
+                    Este campo es requerido!
+                  </div>
+                )}
+                {errors.nombre && errors.nombre.type === 'maxLength' && (
+                  <div className='alert alert-danger mt-3' role='alert'>
+                    El límite de caracteres es de 10
+                  </div>
+                )}
               </div>
-              <div className='form-group'>
-                <label htmlFor=''>Generación del koder</label>
+              <div className='form-group mb-3'>
+                <label htmlFor=''>Email</label>
+                <input
+                  type='email'
+                  className='form-control'
+                  name='name'
+                  {...register('email', {
+                    pattern: {
+                      value: /\S+@\S+\.\S+/,
+                      message: 'Entered value does not match email format'
+                    }
+                  })}
+                />
+                {errors.email && errors.email.type === 'pattern' && (
+                  <div className='alert alert-danger mt-3' role='alert'>
+                    {errors.email.message}
+                  </div>
+                )}
+              </div>
+              <div className='form-group mb-3'>
+                <label htmlFor=''>Generacion</label>
                 <input
                   type='text'
                   className='form-control'
-                  name='generation'
-                  onChange={inputHandler}
+                  name='name'
+                  {...register('generacion')}
                 />
               </div>
-              <button
-                type='button'
-                className='btn btn-primary'
-                onClick={saveKoder}
-              >
+              <div className='form-group mb-3'>
+                <label htmlFor=''>Fecha de nacimiento</label>
+                <input
+                  type='date'
+                  className='form-control'
+                  name='name'
+                  {...register('fecha_de_nacimiento')}
+                />
+              </div>
+              <div className='form-group mb-3'>
+                <label htmlFor=''>Edad</label>
+                <input
+                  type='number'
+                  className='form-control'
+                  name='name'
+                  {...register('edad')}
+                />
+              </div>
+              <div className='form-group mb-3'>
+                <label htmlFor=''>CURP</label>
+                <input
+                  type='text'
+                  className='form-control'
+                  name='name'
+                  {...register('curp')}
+                />
+              </div>
+              <button type='submit' className='btn btn-primary'>
                 Guardar Koder
               </button>
             </form>
