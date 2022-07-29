@@ -13,6 +13,8 @@ import {
 import { Link, Routes, Route } from 'react-router-dom'
 import Publicaciones from './Pages/Publicaciones'
 import NuevaPublicacion from './Pages/NuevaPublicacion'
+import Products from './Pages/Products'
+import ProductDetail from './Pages/ProductDetail'
 
 function App () {
   const [isOpen, setIsOpen] = useState(false)
@@ -42,24 +44,26 @@ function App () {
                 Nueva Publicación
               </Link>
             </NavItem>
+            <NavItem>
+              <Link to='/products' className='nav-link'>
+                Productos
+              </Link>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>
       <div className='container-fluid'>
         <div className='row'>
-          <div className='col-3'>
-            <h1>aside 1</h1>
-          </div>
-          <div className='col-6'>
-            <Routes>
-              <Route path='/' element={<h1>bienvenido a nuestra app</h1>} />
-              <Route path='publicaciones' element={<Publicaciones />} />
-              <Route path='nueva-publicacion' element={<NuevaPublicacion />} />
-            </Routes>
-          </div>
-          <div className='col-3'>
-            <h1>aside 2</h1>
-          </div>
+          <Routes>
+            <Route path='/' element={<h1>bienvenido a nuestra app</h1>} />
+            <Route path='/publicaciones' element={<Publicaciones />} />
+            <Route path='/nueva-publicacion' element={<NuevaPublicacion />} />
+            <Route path='/products' element={<Products hasAsides={true} />} />
+            <Route
+              path='/product-detail/:id/:category'
+              element={<ProductDetail />}
+            />
+          </Routes>
         </div>
       </div>
     </div>
