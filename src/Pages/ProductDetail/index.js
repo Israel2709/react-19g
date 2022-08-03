@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-const ProductDetail = () => {
+const ProductDetail = ({ addHandler }) => {
   const [selectedProduct, setSelectedProduct] = useState({})
   const params = useParams()
   console.log(params)
@@ -33,6 +33,12 @@ const ProductDetail = () => {
           <p className='card-text'>{category}</p>
 
           <p className='card-text'>{price}</p>
+          <button
+            className='btn btn-primary'
+            onClick={() => {
+              addHandler(selectedProduct)
+            }}
+          ></button>
         </div>
       </div>
     </>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Aside1 from '../../Components/Aside1'
 
-const Products = ({ hasAsides }) => {
+const Products = ({ hasAsides, addHandler }) => {
   const [products, setProducts] = useState([])
   useEffect(() => {
     const getProducts = async () => {
@@ -30,15 +30,24 @@ const Products = ({ hasAsides }) => {
             } = product
             return (
               <div className='col'>
-                <Link to={`/product-detail/${id}/test`}>
-                  <div className='card'>
-                    <img src={image} className='card-img-top' alt='...' />
-                    <div className='card-body'>
-                      <h5 className='card-title'>{title}</h5>
-                      <p className='card-text'>{description}</p>
+                <div className='card'>
+                  <img src={image} className='card-img-top' alt='...' />
+                  <div className='card-body'>
+                    <h5 className='card-title'>{title}</h5>
+                    <p className='card-text'>{description}</p>
+                    <div className='d-flex justify-content-between flex-column'>
+                      <Link to={`/product-detail/${id}/test`}>
+                        <button className='btn btn-primary'>Ver detalle</button>
+                      </Link>
+                      <button
+                        className='btn btn-success'
+                        onClick={() => addHandler(product)}
+                      >
+                        Agregar al carrito
+                      </button>
                     </div>
                   </div>
-                </Link>
+                </div>
               </div>
             )
           })}

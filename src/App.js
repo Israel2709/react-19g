@@ -15,16 +15,23 @@ import Publicaciones from './Pages/Publicaciones'
 import NuevaPublicacion from './Pages/NuevaPublicacion'
 import Products from './Pages/Products'
 import ProductDetail from './Pages/ProductDetail'
+import Carrito from './Pages/Carrito/index.'
+import SellOrders from './Pages/SellOrders'
 
 function App () {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedRoute, setSelectedRoute] = useState('')
+  const [shoppingCart, setShoppingCart] = useState([])
   const toggle = () => setIsOpen(!isOpen)
 
   const linkHandler = event => {
     const route = event.target.name
     setSelectedRoute(route)
     console.log(route)
+  }
+
+  const addToCart = product => {
+    setShoppingCart([...shoppingCart, product])
   }
 
   return (
@@ -49,6 +56,11 @@ function App () {
                 Productos
               </Link>
             </NavItem>
+            <NavItem>
+              <Link to='/carrito' className='nav-link'>
+                Carrito
+              </Link>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>
@@ -58,11 +70,19 @@ function App () {
             <Route path='/' element={<h1>bienvenido a nuestra app</h1>} />
             <Route path='/publicaciones' element={<Publicaciones />} />
             <Route path='/nueva-publicacion' element={<NuevaPublicacion />} />
-            <Route path='/products' element={<Products hasAsides={true} />} />
+            <Route
+              path='/carrito'
+              element={<Carrito shoppingCart={shoppingCart} />}
+            />
+            <Route
+              path='/products'
+              element={<Products hasAsides={true} addHandler={addToCart} />}
+            />
             <Route
               path='/product-detail/:id/:category'
-              element={<ProductDetail />}
+              element={<ProductDetail addHandler={addToCart} />}
             />
+            <Route path='/sell-orders' element={<SellOrders />} />
           </Routes>
         </div>
       </div>
